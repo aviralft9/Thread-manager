@@ -17,16 +17,12 @@ router.post('/threads', auth, async (req, res) => {
     }
 })
 
-// GET /tasks?completed=true
-// GET /tasks?limit=10&skip=20
-// GET /tasks?sortBy=createdAt:desc
+
+// GET /threads?limit=10&skip=20
+// GET /threads?sortBy=createdAt:desc
 router.get('/threads', auth, async (req, res) => {
     const match = {}
     const sort = {}
-
-    if (req.query.completed) {
-        match.completed = req.query.completed === 'true'
-    }
 
     if (req.query.sortBy) {
         const parts = req.query.sortBy.split(':')
@@ -43,7 +39,7 @@ router.get('/threads', auth, async (req, res) => {
                 sort
             }
         }).execPopulate()
-        res.send(req.user.tasks)
+        res.send(req.user.threads)
     } catch (e) {
         res.status(500).send()
     }
@@ -67,7 +63,7 @@ router.get('/threads/:id', auth, async (req, res) => {
 
 router.patch('/threads/:id', auth, async (req, res) => {
     const updates = Object.keys(req.body)
-    const allowedUpdates = ['description', 'completed']
+    const allowedUpdates = [ 'title', 'description', 'tags']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
 
     if (!isValidOperation) {

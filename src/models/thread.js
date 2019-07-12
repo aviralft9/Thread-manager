@@ -12,10 +12,8 @@ const threadSchema = new mongoose.Schema({
         trim: true
     },
     tags: [{
-        tag: {
-          type: String,
-          trim: true
-        }
+        type: String,
+        required: true
     }],
     owner: {
         type: mongoose.Schema.Types.ObjectId,
